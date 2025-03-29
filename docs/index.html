@@ -53,8 +53,7 @@
             while (digits.length < 3) {
                 let digit = Math.floor(Math.random() * 10);
                 if (digits.length === 0 && digit === 0) {
-                    alert("The number cannot start with 0. Generating a new number...");
-                    continue;
+                    continue; // Allow the number to start with a non-zero digit
                 }
                 if (!digits.includes(digit)) {
                     digits.push(digit);
@@ -65,15 +64,17 @@
 
         function makeGuess() {
             const guess = document.getElementById('guessInput').value;
-
-            if (guess.length !== 3 || new Set(guess).size !== 3 || isNaN(guess) || guess[0] === '0') {
-                alert('Please enter a valid 3-digit number with unique digits that does not start with 0.');
+            if (guess.length !== 3 || new Set(guess).size !== 3 || isNaN(guess)) {
+                alert('Please enter a valid 3-digit number with unique digits.');
                 return;
             }
 
             const result = compareNumbers(randomNumber, guess);
             attempts.push({ guess, result });
             displayResults();
+
+            // Clear the guess input field after a guess
+            document.getElementById('guessInput').value = '';
 
             if (guess === randomNumber) {
                 document.getElementById('message').innerHTML = `Congratulations! You guessed the correct number in ${attempts.length} attempts.<br>Do you want to play again? <button onclick='restartGame()' class='bg-green-500 text-white px-2 py-1 rounded'>Yes</button>`;

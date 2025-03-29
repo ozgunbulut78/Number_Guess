@@ -64,6 +64,13 @@
 
         function makeGuess() {
             const guess = document.getElementById('guessInput').value;
+
+            // Check if the guess starts with 0
+            if (guess.charAt(0) === '0') {
+                alert("Your guess cannot start with 0. Please try again.");
+                return;
+            }
+
             if (guess.length !== 3 || new Set(guess).size !== 3 || isNaN(guess)) {
                 alert('Please enter a valid 3-digit number with unique digits.');
                 return;

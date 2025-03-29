@@ -9,6 +9,9 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            background: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
+            background-size: cover;
+            background-color: #b3e0ff;
         }
         table {
             width: 100%;
@@ -25,23 +28,34 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 flex flex-col items-center min-h-screen p-4">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 class="text-2xl font-bold mb-4 text-center">Özgün Bulut's Number Guessing Game</h1>
         <p class="mb-4 text-center">Guess the 3-digit number with unique digits!</p>
         <input type="text" id="guessInput" class="border p-2 w-full mb-4" placeholder="Enter your guess">
         <button onclick="makeGuess()" class="bg-blue-500 text-white p-2 w-full rounded">Submit Guess</button>
-        <div id="results" class="mt-4"></div>
+        <div id="message" class="mt-4 text-center font-bold text-lg text-green-600"></div>
     </div>
+    <div id="results" class="mt-4 w-full max-w-md"></div>
 
     <script>
         let randomNumber = generateRandomNumber();
         let attempts = [];
 
+        document.getElementById("guessInput").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                makeGuess();
+            }
+        });
+
         function generateRandomNumber() {
             let digits = [];
             while (digits.length < 3) {
                 let digit = Math.floor(Math.random() * 10);
+                if (digits.length === 0 && digit === 0) {
+                    alert("The number cannot start with 0. Generating a new number...");
+                    continue;
+                }
                 if (!digits.includes(digit)) {
                     digits.push(digit);
                 }
@@ -51,8 +65,9 @@
 
         function makeGuess() {
             const guess = document.getElementById('guessInput').value;
-            if (guess.length !== 3 || new Set(guess).size !== 3 || isNaN(guess)) {
-                alert('Please enter a valid 3-digit number with unique digits.');
+
+            if (guess.length !== 3 || new Set(guess).size !== 3 || isNaN(guess) || guess[0] === '0') {
+                alert('Please enter a valid 3-digit number with unique digits that does not start with 0.');
                 return;
             }
 
@@ -61,10 +76,7 @@
             displayResults();
 
             if (guess === randomNumber) {
-                alert(`Congratulations! You guessed the correct number in ${attempts.length} attempts.`);
-                randomNumber = generateRandomNumber();
-                attempts = [];
-                displayResults();
+                document.getElementById('message').innerHTML = `Congratulations! You guessed the correct number in ${attempts.length} attempts.<br>Do you want to play again? <button onclick='restartGame()' class='bg-green-500 text-white px-2 py-1 rounded'>Yes</button>`;
             }
         }
 
@@ -108,6 +120,13 @@
                 table += `</table>`;
                 resultsDiv.innerHTML = table;
             }
+        }
+
+        function restartGame() {
+            randomNumber = generateRandomNumber();
+            attempts = [];
+            displayResults();
+            document.getElementById('message').innerHTML = '';
         }
     </script>
 </body>

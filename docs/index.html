@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
+            background: url('/mnt/data/A_2D_digital_graphic_displays_a_gradient_backgroun.png');
             background-size: cover;
             background-color: #b3e0ff;
         }
@@ -53,7 +53,7 @@
             while (digits.length < 3) {
                 let digit = Math.floor(Math.random() * 10);
                 if (digits.length === 0 && digit === 0) {
-                    continue; // Allow the number to start with a non-zero digit
+                    continue;
                 }
                 if (!digits.includes(digit)) {
                     digits.push(digit);
@@ -73,8 +73,7 @@
             attempts.push({ guess, result });
             displayResults();
 
-            // Clear the guess input field after a guess
-            document.getElementById('guessInput').value = '';
+            document.getElementById("guessInput").value = ""; // Clear input after guess
 
             if (guess === randomNumber) {
                 document.getElementById('message').innerHTML = `Congratulations! You guessed the correct number in ${attempts.length} attempts.<br>Do you want to play again? <button onclick='restartGame()' class='bg-green-500 text-white px-2 py-1 rounded'>Yes</button>`;
